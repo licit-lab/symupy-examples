@@ -1,7 +1,7 @@
 """ Simple step by step of manhattan grid files.
 """
 import os
-from ctypes import c_int
+from ctypes import c_int, c_long
 from symupy.runtime.api import Simulator
 import pandas as pd
 
@@ -57,6 +57,17 @@ with simulator as s:
             vehids.append(vehid)
         s.run_step()
 
-        if s.simulationstep>10
+        if s.simulationstep > 10:
             # catching data for veh id 0
-            print(s._Simulator__library.SymGetVehicleSpeed(c_int(0)))
+
+            print(
+                f"\n\tAcceleration: {s._Simulator__library.SymGetVehicleAcc(c_long(1))}"
+            )
+            print(
+                f"\tSpeed: {s._Simulator__library.SymGetVehicleSpeed(c_int(1))}"
+            )
+            print(
+                f"\tLink: {s._Simulator__library.SymGetVehicleLink(c_int(1))}"
+            )
+            print(f"\tX: {s._Simulator__library.SymGetVehicleX(c_int(1))}")
+            print(f"\tY: {s._Simulator__library.SymGetVehicleY(c_int(1))}\n")
