@@ -15,7 +15,7 @@ python 1-bottleneck_by_steps.py
 
 ```
 # This will run a manhattan grid simulation of mid scale
-python 2-manhattan-bysteps-trajs.py
+python 2-performance-bysteps-trajs.py
 ```
 
 For special configurations see indications on each example. 
