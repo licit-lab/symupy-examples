@@ -1,7 +1,7 @@
-""" Simple step by step of bottleneck files.
+""" Simple step by step of manhattan grid files.
 """
 import os
-from symupy.runtime.api import Simulator, Simulation
+from symupy.runtime.api import Simulator
 import pandas as pd
 
 # Path
