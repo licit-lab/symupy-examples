@@ -1,7 +1,7 @@
 """ Simple step by step of manhattan grid files.
 """
 import os
-from ctypes import c_int, c_long
+from ctypes import c_int, c_double, c_char, c_char_p
 from symupy.runtime.api import Simulator
 import pandas as pd
 
@@ -24,7 +24,7 @@ demandpath = os.path.join(
 )
 
 # Simulation file
-simulator = Simulator(step_launch_mode="full", library_path=LIBRARY_PATH)
+simulator = Simulator(step_launch_mode="lite", library_path=LIBRARY_PATH)
 simulator.register_simulation(manhattanxml)
 
 # Demand file
@@ -49,8 +49,15 @@ def extract_veh_data(demand: pd.DataFrame, time: int) -> tuple:
 
 vehids = []
 
+
 with simulator as s:
     vehids = []
+    simulator._Simulator__library.SymGetVehicleAcc.restype = c_double
+    simulator._Simulator__library.SymGetVehicleSpeed.restype = c_double
+    simulator._Simulator__library.SymGetVehicleLink.restype = c_char_p
+    simulator._Simulator__library.SymGetVehicleX.restype = c_double
+    simulator._Simulator__library.SymGetVehicleY.restype = c_double
+
     while s.do_next:
         for veh_data in extract_veh_data(demand, s.simulationstep):
             vehid = s.create_vehicle_with_route(*veh_data)
@@ -61,7 +68,7 @@ with simulator as s:
             # catching data for veh id 0
 
             print(
-                f"\n\tAcceleration: {s._Simulator__library.SymGetVehicleAcc(c_long(1))}"
+                f"\n\tAcceleration: {s._Simulator__library.SymGetVehicleAcc(c_int(1))}"
             )
             print(
                 f"\tSpeed: {s._Simulator__library.SymGetVehicleSpeed(c_int(1))}"
