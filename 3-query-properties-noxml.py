@@ -64,7 +64,7 @@ with simulator as s:
             vehids.append(vehid)
         s.run_step()
 
-        if s.simulationstep > 10:
+        if s.simulationstep > 10 or s.simulationstep < 20:
             # catching data for veh id 0
 
             print(
@@ -78,3 +78,6 @@ with simulator as s:
             )
             print(f"\tX: {s._Simulator__library.SymGetVehicleX(c_int(1))}")
             print(f"\tY: {s._Simulator__library.SymGetVehicleY(c_int(1))}\n")
+
+        if s.simulationstep > 20:
+            s.stop_step()
