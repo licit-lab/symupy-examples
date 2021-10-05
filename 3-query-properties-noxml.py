@@ -24,7 +24,9 @@ demandpath = os.path.join(
 )
 
 # Simulation file
-simulator = Simulator(step_launch_mode="lite", library_path=LIBRARY_PATH)
+simulator = Simulator(
+    write_xml=False, step_launch_mode="lite", library_path=LIBRARY_PATH
+)
 simulator.register_simulation(manhattanxml)
 
 # Demand file
@@ -55,8 +57,14 @@ with simulator as s:
     simulator._Simulator__library.SymGetVehicleAcc.restype = c_double
     simulator._Simulator__library.SymGetVehicleSpeed.restype = c_double
     simulator._Simulator__library.SymGetVehicleLink.restype = c_char_p
-    simulator._Simulator__library.SymGetVehicleX.restype = c_double
-    simulator._Simulator__library.SymGetVehicleY.restype = c_double
+    simulator._Simulator__library.SymGetVehicleAbscissa.restype = c_double
+    simulator._Simulator__library.SymGetVehicleOrdinate.restype = c_double
+    simulator._Simulator__library.SymGetVehicleLane.restype = c_int
+    simulator._Simulator__library.SymGetVehicleRelativePositionOnLink.restype = (
+        c_double
+    )
+    simulator._Simulator__library.SymGetVehicleTravelDistance.restype = c_double
+    simulator._Simulator__library.SymGetVehicleTravelTime.restype = c_double
 
     while s.do_next:
         for veh_data in extract_veh_data(demand, s.simulationstep):
@@ -76,8 +84,25 @@ with simulator as s:
             print(
                 f"\tLink: {s._Simulator__library.SymGetVehicleLink(c_int(1))}"
             )
-            print(f"\tX: {s._Simulator__library.SymGetVehicleX(c_int(1))}")
-            print(f"\tY: {s._Simulator__library.SymGetVehicleY(c_int(1))}\n")
+            print(
+                f"\tX: {s._Simulator__library.SymGetVehicleAbscissa(c_int(1))}"
+            )
+            print(
+                f"\tY: {s._Simulator__library.SymGetVehicleOrdinate(c_int(1))}"
+            )
+
+            print(
+                f"\tLane: {simulator._Simulator__library.SymGetVehicleLane(c_int(1))}"
+            )
+            print(
+                f"\tDistance: {simulator._Simulator__library.SymGetVehicleRelativePositionOnLink(c_int(1))}"
+            )
+            print(
+                f"\tTTD: {simulator._Simulator__library.SymGetVehicleTravelDistance(c_int(1))}"
+            )
+            print(
+                f"\tTTT: {simulator._Simulator__library.SymGetVehicleTravelTime(c_int(1))}\n"
+            )
 
         if s.simulationstep > 20:
             s.stop_step()
