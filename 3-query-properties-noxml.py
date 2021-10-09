@@ -54,17 +54,6 @@ vehids = []
 
 with simulator as s:
     vehids = []
-    simulator._Simulator__library.SymGetVehicleAcc.restype = c_double
-    simulator._Simulator__library.SymGetVehicleSpeed.restype = c_double
-    simulator._Simulator__library.SymGetVehicleLink.restype = c_char_p
-    simulator._Simulator__library.SymGetVehicleAbscissa.restype = c_double
-    simulator._Simulator__library.SymGetVehicleOrdinate.restype = c_double
-    simulator._Simulator__library.SymGetVehicleLane.restype = c_int
-    simulator._Simulator__library.SymGetVehicleRelativePositionOnLink.restype = (
-        c_double
-    )
-    simulator._Simulator__library.SymGetVehicleTravelDistance.restype = c_double
-    simulator._Simulator__library.SymGetVehicleTravelTime.restype = c_double
 
     while s.do_next:
         for veh_data in extract_veh_data(demand, s.simulationstep):
@@ -76,32 +65,17 @@ with simulator as s:
             # catching data for veh id 0
 
             print(
-                f"\n\tAcceleration: {s._Simulator__library.SymGetVehicleAcc(c_int(1))}"
-            )
-            print(
-                f"\tSpeed: {s._Simulator__library.SymGetVehicleSpeed(c_int(1))}"
-            )
-            print(
-                f"\tLink: {s._Simulator__library.SymGetVehicleLink(c_int(1))}"
-            )
-            print(
-                f"\tX: {s._Simulator__library.SymGetVehicleAbscissa(c_int(1))}"
-            )
-            print(
-                f"\tY: {s._Simulator__library.SymGetVehicleOrdinate(c_int(1))}"
-            )
-
-            print(
-                f"\tLane: {simulator._Simulator__library.SymGetVehicleLane(c_int(1))}"
-            )
-            print(
-                f"\tDistance: {simulator._Simulator__library.SymGetVehicleRelativePositionOnLink(c_int(1))}"
-            )
-            print(
-                f"\tTTD: {simulator._Simulator__library.SymGetVehicleTravelDistance(c_int(1))}"
-            )
-            print(
-                f"\tTTT: {simulator._Simulator__library.SymGetVehicleTravelTime(c_int(1))}\n"
+                f"""
+                \tAcceleration: {s.get_vehicle_acceleration(1)}
+                \tSpeed: {s.get_vehicle_speed(1)}
+                \tLink: {s.get_vehicle_link(1)}
+                \tAbscissa: {s.get_vehicle_abscissa(1)}
+                \tOrdinate: {s.get_vehicle_ordinate(1)}
+                \tLane: {s.get_vehicle_lane(1)}
+                \tDistance: {s.get_vehicle_distance(1)}
+                \tTotal Distance: {s.get_vehicle_total_travel_distance(1)}
+                \tTotal Time: {s.get_vehicle_total_travel_time(1)}
+            """
             )
 
         if s.simulationstep > 20:
