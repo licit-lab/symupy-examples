@@ -1,9 +1,9 @@
 # Set of examples with `symupy`
 
-Just create the conda environment from 'env.yml' 
+Just create the conda environment from 'env.yaml' 
 
 ```
-conda env create -f env.yml
+conda env create -f env.yaml
 ```
 
 and launch the python file. 
