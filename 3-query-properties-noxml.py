@@ -1,4 +1,4 @@
-""" Simple step by step of manhattan grid files.
+""" Simple step by step of manhattan grid  and data query via API
 """
 import os
 from ctypes import c_int, c_double, c_char, c_char_p
@@ -10,17 +10,11 @@ LIBRARY_PATH = "/Users/andresladino/Documents/01-Code/02-Python/research/control
 
 # Path
 manhattanxml = os.path.join(
-    os.getcwd(),
-    "network",
-    "ManhattanGrid",
-    "manhattan_3X3_scenario_G.xml",
+    os.getcwd(), "network", "ManhattanGrid", "manhattan_3X3_scenario_G.xml",
 )
 
 demandpath = os.path.join(
-    os.getcwd(),
-    "network",
-    "ManhattanGrid",
-    "demand_scenario_G.csv",
+    os.getcwd(), "network", "ManhattanGrid", "demand_scenario_G.csv",
 )
 
 # Simulation file
@@ -49,34 +43,35 @@ def extract_veh_data(demand: pd.DataFrame, time: int) -> tuple:
         )
 
 
-vehids = []
+if __name__ == "__main__":
 
-
-with simulator as s:
     vehids = []
 
-    while s.do_next:
-        for veh_data in extract_veh_data(demand, s.simulationstep):
-            vehid = s.create_vehicle_with_route(*veh_data)
-            vehids.append(vehid)
-        s.run_step()
+    with simulator as s:
+        vehids = []
 
-        if s.simulationstep > 10 or s.simulationstep < 20:
-            # catching data for veh id 0
+        while s.do_next:
+            for veh_data in extract_veh_data(demand, s.simulationstep):
+                vehid = s.create_vehicle_with_route(*veh_data)
+                vehids.append(vehid)
+            s.run_step()
 
-            print(
-                f"""
-                \tAcceleration: {s.get_vehicle_acceleration(1)}
-                \tSpeed: {s.get_vehicle_speed(1)}
-                \tLink: {s.get_vehicle_link(1)}
-                \tAbscissa: {s.get_vehicle_abscissa(1)}
-                \tOrdinate: {s.get_vehicle_ordinate(1)}
-                \tLane: {s.get_vehicle_lane(1)}
-                \tDistance: {s.get_vehicle_distance(1)}
-                \tTotal Distance: {s.get_vehicle_total_travel_distance(1)}
-                \tTotal Time: {s.get_vehicle_total_travel_time(1)}
-            """
-            )
+            if s.simulationstep > 10 or s.simulationstep < 20:
+                # catching data for veh id 0
 
-        if s.simulationstep > 20:
-            s.stop_step()
+                print(
+                    f"""
+                    \tAcceleration: {s.get_vehicle_acceleration(1)}
+                    \tSpeed: {s.get_vehicle_speed(1)}
+                    \tLink: {s.get_vehicle_link(1)}
+                    \tAbscissa: {s.get_vehicle_abscissa(1)}
+                    \tOrdinate: {s.get_vehicle_ordinate(1)}
+                    \tLane: {s.get_vehicle_lane(1)}
+                    \tDistance: {s.get_vehicle_distance(1)}
+                    \tTotal Distance: {s.get_vehicle_total_travel_distance(1)}
+                    \tTotal Time: {s.get_vehicle_total_travel_time(1)}
+                """
+                )
+
+            if s.simulationstep > 20:
+                s.stop_step()

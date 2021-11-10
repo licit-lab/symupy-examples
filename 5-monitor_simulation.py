@@ -33,4 +33,6 @@ manager.add_monitor(
     SymuviaMonitorFlux(["L_0"], aggregation_period=10), 2, 0, colspan=3
 )
 manager.set_feeder(launch_simuflow(FILE))
-manager.launch_app()
+
+if __name__ == "__main__":
+    manager.launch_app()

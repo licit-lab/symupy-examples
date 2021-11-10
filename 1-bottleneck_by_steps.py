@@ -14,15 +14,18 @@ simulator = Simulator(step_launch_mode="full")
 
 simulator.register_simulation(bottleneck01)
 
-with simulator as s:
-    while s.do_next:
-        s.run_step()
 
-        # Retrieve original query
-        # s.request.query
+if __name__ == "__main__":
 
-        # # Retreive vehicle data formated as dictionaries
-        # s.request.get_vehicle_data()
+    with simulator as s:
+        while s.do_next:
+            s.run_step()
 
-        # # Retreive data as a vehicle list (printed as dataframe)
-        s.vehicles
+            # Retrieve original query
+            # s.request.query
+
+            # # Retreive vehicle data formated as dictionaries
+            # s.request.get_vehicle_data()
+
+            # # Retreive data as a vehicle list (printed as dataframe)
+            s.vehicles

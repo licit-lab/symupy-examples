@@ -6,17 +6,11 @@ import pandas as pd
 
 # Path
 manhattanxml = os.path.join(
-    os.getcwd(),
-    "network",
-    "ManhattanGrid",
-    "manhattan_3X3_scenario_G.xml",
+    os.getcwd(), "network", "ManhattanGrid", "manhattan_3X3_scenario_G.xml",
 )
 
 demandpath = os.path.join(
-    os.getcwd(),
-    "network",
-    "ManhattanGrid",
-    "demand_scenario_G.csv",
+    os.getcwd(), "network", "ManhattanGrid", "demand_scenario_G.csv",
 )
 
 # Simulation file
@@ -43,22 +37,24 @@ def extract_veh_data(demand: pd.DataFrame, time: int) -> tuple:
         )
 
 
-vehids = []
+if __name__ == "__main__":
 
-with simulator as s:
     vehids = []
-    while s.do_next:
-        for veh_data in extract_veh_data(demand, s.simulationstep):
-            vehid = s.create_vehicle_with_route(*veh_data)
-            vehids.append(vehid)
 
-        s.run_step()
+    with simulator as s:
+        vehids = []
+        while s.do_next:
+            for veh_data in extract_veh_data(demand, s.simulationstep):
+                vehid = s.create_vehicle_with_route(*veh_data)
+                vehids.append(vehid)
 
-        # Retrieve original query
-        # s.request.query
+            s.run_step()
 
-        # # Retreive vehicle data formated as dictionaries
-        # s.request.get_vehicle_data()
+            # Retrieve original query
+            # s.request.query
 
-        # # Retreive data as a vehicle list (printed as dataframe)
-        # s.vehicles
+            # # Retreive vehicle data formated as dictionaries
+            # s.request.get_vehicle_data()
+
+            # # Retreive data as a vehicle list (printed as dataframe)
+            # s.vehicles
